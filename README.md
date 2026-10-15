@@ -12,6 +12,8 @@ It adds a gradient.
 
 OCD UI is an agent skill for the part where you start noticing things.
 
+Designed for **Claude Code and Codex**, using the same `SKILL.md` instructions and supporting references.
+
 ## What it does
 
 It gives your coding agent a finishing pass for page composition, typography, spacing, optical alignment, and consistency across an interface. It covers both the tiny inset you cannot unsee and the section that feels wrong before you know why.
@@ -47,12 +49,22 @@ With Node.js and npm installed, run this from your project folder:
 npx skills add Sandith02/ocd-ui
 ```
 
-Choose your coding agent and installation options. The Skills CLI downloads the skill from this repository.
+Choose your coding agent and installation options. The [Skills CLI](https://github.com/vercel-labs/skills) downloads the skill from this repository and supports both Claude Code and Codex.
 
-For Codex explicitly:
+To target one agent explicitly:
 
 ```bash
+# Claude Code
+npx skills add Sandith02/ocd-ui --agent claude-code
+
+# Codex
 npx skills add Sandith02/ocd-ui --agent codex
+```
+
+Or install for both:
+
+```bash
+npx skills add Sandith02/ocd-ui --agent claude-code codex
 ```
 
 Add `--global` to install for your user across projects.
@@ -62,27 +74,50 @@ No runtime dependency in your website. No API key required by the skill. Your ag
 <details>
 <summary>I would like to install it manually, for some reason.</summary>
 
-For local Codex CLI or IDE use, run this from your project root if the destination does not already exist:
+Choose the folder for your agent. These are the documented local skill locations for [Claude Code](https://code.claude.com/docs/en/skills#choose-where-skills-load) and [Codex](https://developers.openai.com/codex/skills/):
+
+| Agent | This project | Across your local projects |
+| --- | --- | --- |
+| Claude Code | `.claude/skills/ocd-ui/` | `~/.claude/skills/ocd-ui/` |
+| Codex | `.agents/skills/ocd-ui/` | `~/.agents/skills/ocd-ui/` |
+
+Run the matching commands from your project root if the destination does not already exist.
+
+Claude Code:
+
+```bash
+mkdir -p .claude/skills
+git clone https://github.com/Sandith02/ocd-ui.git .claude/skills/ocd-ui
+```
+
+Codex:
 
 ```bash
 mkdir -p .agents/skills
 git clone https://github.com/Sandith02/ocd-ui.git .agents/skills/ocd-ui
 ```
 
-Or use **Code → Download ZIP**, extract it, and copy the contents into `.agents/skills/ocd-ui/`. Keep `SKILL.md` directly inside that folder, with `references/`, `agents/`, and `assets/` beside it.
+Or use **Code → Download ZIP**, extract it, and copy the contents into the matching folder above. Keep `SKILL.md` directly inside `ocd-ui/`, with `references/`, `agents/`, and `assets/` beside it.
 
-For use across your local projects, put the folder in `~/.agents/skills/ocd-ui/` instead. Back up an existing installation before replacing it.
+For use across projects, use your agent's user-level folder from the table. Back up an existing installation before replacing it.
 
 </details>
 
 ## Give it something to stare at
 
-In Codex, invoke it with `$ocd-ui`:
+Invoke the installed skill using your agent's syntax:
+
+| Agent | Example prompt |
+| --- | --- |
+| Claude Code | `/ocd-ui Review this page for visual consistency without editing.` |
+| Codex | `Use $ocd-ui to review this page for visual consistency without editing.` |
+
+Claude Code uses `/skill-name`; Codex supports `$skill-name` mentions. See the [Claude Code skill guide](https://code.claude.com/docs/en/skills) and [Codex skill guide](https://developers.openai.com/codex/skills/). Use either invocation with the task briefs below.
 
 **Before the page develops several personalities:**
 
 ```text
-Use $ocd-ui while building this page. Choose typography that fits the brief,
+While building this page, choose typography that fits the brief,
 establish shared content widths, section spacing, a type scale, and a button
 family. Keep headings deliberate and copy concise. Inspect the rendered result.
 ```
@@ -90,7 +125,7 @@ family. Keep headings deliberate and copy concise. Inspect the rendered result.
 **After the page has developed several personalities:**
 
 ```text
-Use $ocd-ui to review this page's widths, section rhythm, heading wraps,
+Review this page's widths, section rhythm, heading wraps,
 typography, and buttons. Flag unnecessary text or decoration and accidental
 differences between equivalent roles. Report findings without editing.
 ```
@@ -98,25 +133,27 @@ differences between equivalent roles. Report findings without editing.
 **For that one thing you cannot unsee:**
 
 ```text
-Use $ocd-ui to fix this button's text and icon alignment against the reference.
+Fix this button's text and icon alignment against the reference.
 Preserve the font and verify the result with a longer label.
 ```
 
 **For the finishing pass you usually do yourself:**
 
 ```text
-Use $ocd-ui to polish this page. Fix inconsistent button heights, nested
+Polish this page. Fix inconsistent button heights, nested
 control insets, section widths, and unbalanced columns. Improve heading wraps
 and shorten redundant marketing copy without changing its meaning. Remove
 unnecessary decorative emphasis and dividers. Preserve the brand and verify
 the result at desktop and mobile sizes.
 ```
 
-Use your host's documented invocation method in other agents. The core instructions are host-neutral; agent-by-agent behavior has not been verified.
+The instructions are host-neutral and use no agent-specific commands or required tool integrations. Other hosts that support Agent Skills may also load them; follow the host's installation and invocation documentation. Compatibility with the documented format does not establish equal results across agents; end-to-end behavior has not been verified in both Claude Code and Codex.
 
 ## Under the hood
 
 The instructions live in [SKILL.md](SKILL.md). The supporting references cover [page composition and content restraint](references/page-composition.md), [typography](references/typography.md), [component relationships](references/component-patterns.md), and [visual consistency](references/visual-consistency.md).
+
+[agents/openai.yaml](agents/openai.yaml) provides optional OpenAI-specific display metadata and invocation settings, as described in the [OpenAI skill documentation](https://developers.openai.com/codex/skills/). It is not the skill's implementation or a requirement for Claude Code. Both agents use the shared `SKILL.md` and references; no separate Claude instruction file is needed.
 
 The agent reads the existing design and code, checks the relevant relationships, makes scoped changes when asked, and verifies what it can.
 

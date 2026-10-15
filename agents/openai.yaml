@@ -1,3 +1,5 @@
+# Optional OpenAI host metadata. Shared instructions live in ../SKILL.md.
+# Claude Code uses SKILL.md and references/ without requiring this file.
 interface:
   display_name: "OCD UI"
   short_description: "Polish page composition, typography, and UI consistency"
