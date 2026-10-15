@@ -2,6 +2,17 @@
 
 Use these patterns as diagnostic questions, not fixed pixel recipes. A reference may already be correct.
 
+## Pill navbar with a trailing pill button
+
+- Inspect the navbar shell, its inner content area, the trailing button, and the button's label as separate layers.
+- When the design calls for an evenly inset trailing button, use the same top, bottom, and trailing gap measured from the same inner border edge. Account for border thickness; do not mix outer-edge and inner-edge measurements.
+- For a single-row shell, its inner height should accommodate the button's outer height plus the two vertical gaps. Prefer shared padding and natural sizing over unrelated hardcoded heights and positional offsets.
+- Align the logo and navigation items within the same content area. Inspect link line heights and padding; centering their boxes alone may leave the visible text uneven.
+- Keep the leading logo inset appropriate to its shape; it does not automatically need to match the trailing button's inset. Preserve an intentionally different reference.
+- Verify the compact or collapsed navigation state. Do not keep desktop dimensions by shrinking hit areas or letting links collide with the button.
+
+Example: a trailing CTA has 8px above and below it but 14px to the right, with no intended exception. Trace shell padding and button margin, then use the intended shared inset. Do not move the button with a transform that leaves the original layout gap behind.
+
 ## Large numeral with a stacked label
 
 Example: a large `33` alongside `days` / `left` inside a rounded rectangle.
