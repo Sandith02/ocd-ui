@@ -1,0 +1,14 @@
+interface:
+  display_name: OCD UI
+  short_description: Refine typography, alignment, and UI consistency
+  default_prompt: Use $ocd-ui to review this interface for typography and
+    alignment issues while preserving its design.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
