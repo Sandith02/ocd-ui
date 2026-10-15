@@ -18,7 +18,25 @@ Early experimental version. The skill structure has been validated, but visual i
 
 There is no runtime package to add to your website and no API key required by this skill. Your agent and any optional tools retain their own costs and access requirements.
 
-## Install in Codex CLI or IDE
+## Quick install
+
+With Node.js and npm installed, run this from your project folder:
+
+```bash
+npx skills add Sandith02/ocd-ui
+```
+
+The Skills CLI downloads the skill from this GitHub repository and prompts you to choose your coding agent and installation options. This does not add a runtime dependency to your website.
+
+To target Codex explicitly:
+
+```bash
+npx skills add Sandith02/ocd-ui --agent codex
+```
+
+Add `--global` to install for your user across projects instead of just the current project. These commands use the existing `skills` CLI; OCD UI does not require a separate npm package.
+
+## Manual installation in Codex CLI or IDE
 
 From your project root, if the destination does not already exist:
 
